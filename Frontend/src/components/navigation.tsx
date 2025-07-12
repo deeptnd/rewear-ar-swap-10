@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,9 +14,19 @@ import {
   Leaf,
   Bell
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const getLinkClasses = (path: string) => {
+    return `flex items-center gap-2 ${isActive(path) ? 'text-primary font-medium' : 'text-foreground hover:text-primary'} transition-colors`;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -23,35 +34,35 @@ export const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex items-center">
+            <Link to="/" className="flex items-center">
               <div className="w-8 h-8 bg-gradient-eco rounded-lg flex items-center justify-center mr-3">
                 <Leaf className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-2xl font-bold text-foreground">ReWear</span>
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Button variant="ghost" className="text-foreground">
-              <Search className="w-4 h-4 mr-2" />
+            <Link to="/discover" className={getLinkClasses('/discover')}>
+              <Search className="w-4 h-4" />
               Discover
-            </Button>
-            <Button variant="ghost" className="text-foreground">
-              <Camera className="w-4 h-4 mr-2" />
+            </Link>
+            <Link to="/virtual-try-on" className={getLinkClasses('/virtual-try-on')}>
+              <Camera className="w-4 h-4" />
               AR Try-On
-            </Button>
-            <Button variant="ghost" className="text-foreground">
-              <Recycle className="w-4 h-4 mr-2" />
+            </Link>
+            <Link to="/my-swaps" className={getLinkClasses('/my-swaps')}>
+              <Recycle className="w-4 h-4" />
               My Swaps
-            </Button>
-            <Button variant="ghost" className="relative text-foreground">
-              <Trophy className="w-4 h-4 mr-2" />
+            </Link>
+            <Link to="/leaderboard" className={getLinkClasses('/leaderboard')}>
+              <Trophy className="w-4 h-4" />
               Leaderboard
-              <Badge variant="destructive" className="absolute -top-1 -right-1 px-1 min-w-5 h-5 text-xs">
+              <Badge variant="destructive" className="ml-1 px-1 min-w-5 h-5 text-xs">
                 3
               </Badge>
-            </Button>
+            </Link>
           </div>
 
           {/* Right Side Actions */}
@@ -97,22 +108,46 @@ export const Navigation = () => {
         {isMenuOpen && (
           <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-md">
             <div className="px-4 py-4 space-y-3">
-              <Button variant="ghost" className="w-full justify-start">
-                <Search className="w-4 h-4 mr-2" />
-                Discover
-              </Button>
-              <Button variant="ghost" className="w-full justify-start">
-                <Camera className="w-4 h-4 mr-2" />
-                AR Try-On
-              </Button>
-              <Button variant="ghost" className="w-full justify-start">
-                <Recycle className="w-4 h-4 mr-2" />
-                My Swaps
-              </Button>
-              <Button variant="ghost" className="w-full justify-start">
-                <Trophy className="w-4 h-4 mr-2" />
-                Leaderboard
-              </Button>
+              <Link 
+                to="/discover" 
+                className={`w-full justify-start ${getLinkClasses('/discover')}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  <Search className="w-4 h-4 mr-2" />
+                  Discover
+                </Button>
+              </Link>
+              <Link 
+                to="/virtual-try-on" 
+                className={`w-full justify-start ${getLinkClasses('/virtual-try-on')}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  <Camera className="w-4 h-4 mr-2" />
+                  AR Try-On
+                </Button>
+              </Link>
+              <Link 
+                to="/my-swaps" 
+                className={`w-full justify-start ${getLinkClasses('/my-swaps')}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  <Recycle className="w-4 h-4 mr-2" />
+                  My Swaps
+                </Button>
+              </Link>
+              <Link 
+                to="/leaderboard" 
+                className={`w-full justify-start ${getLinkClasses('/leaderboard')}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  <Trophy className="w-4 h-4 mr-2" />
+                  Leaderboard
+                </Button>
+              </Link>
               <Button variant="eco" className="w-full justify-start">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Item
